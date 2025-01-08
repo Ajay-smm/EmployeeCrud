@@ -11,4 +11,7 @@ public interface EmployeeService {
 
     String deleteEmployee(String id);
 
+    Employee getHighestPaidEmployee();
+
+
 }

@@ -3,46 +3,57 @@ package com.employee.service;
 import com.employee.entity.Employee;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
     private Employee employee;
 
-   @Override
-     public Employee getEmployeeDetails(String id) {
 
-        if (id.equals("10")) {
-            return new Employee("10", "john", "100");
-        }
-        else if (id.equals("20")) {
-            return new Employee("20", "rob", "200");
-        }
-        else if (id.equals("30")) {
-            return new Employee("30", "arya", "300");
-        }
+    private final List<Employee> employees = new ArrayList<>();
 
-        else {
-            return null;
-        }
-     }
-
+    @Override
+    public Employee getEmployeeDetails(String id) {
+        return employees.stream()
+                .filter(employee -> employee.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
 
     @Override
     public String createEmployee(Employee employee) {
-        this.employee=employee;
-        return "created employee objects";
+        employees.add(employee);
+        return "Created employee successfully";
     }
 
     @Override
     public String updateEmployee(Employee employee) {
-        this.employee = employee;
-        return "Product updated successfully";
+        for (int i = 0; i < employees.size(); i++) {
+            if (employees.get(i).getId().equals(employee.getId())) {
+                employees.set(i, employee);
+                return "Employee updated successfully";
+            }
+        }
+        return "Employee not found";
     }
 
     @Override
     public String deleteEmployee(String id) {
-        this.employee = null;
-        return "deleted employee successfully";
+        employees.removeIf(employee -> employee.getId().equals(id));
+        return "Deleted employee successfully";
     }
+
+
+    @Override
+    public Employee getHighestPaidEmployee() {
+        return employees.stream()
+                .max((e1,e2) -> Integer.compare(Integer.parseInt(e1.getSalary()),Integer.parseInt(e2.getSalary())))
+                .orElse(null);
+
+    }
+
+
 
 }

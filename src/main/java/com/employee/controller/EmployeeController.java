@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
             return employeeService.createEmployee(employee);
         }
 
-
         @PutMapping
         public String updateEmployeeDetails(@RequestBody Employee employee) {
             return employeeService.updateEmployee(employee);
@@ -31,6 +30,11 @@ import org.springframework.web.bind.annotation.*;
         @DeleteMapping("{id}")
         public String deleteEmployeeDetails(@PathVariable String id) {
             return employeeService.deleteEmployee(id);
+        }
+
+        @GetMapping("/highest-paid")
+        public Employee getHighestPaidEmployee() {
+            return employeeService.getHighestPaidEmployee();
         }
 
     }
